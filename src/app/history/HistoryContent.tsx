@@ -16,7 +16,7 @@ export default function HistoryContent({ view, misses, flatData }: HistoryConten
     const [password, setPassword] = useState("");
     const [error, setError] = useState(false);
 
-    const MASTER_PASSWORD = "admin";
+    const MASTER_PASSWORD = process.env.NEXT_PUBLIC_ADMIN_PASSWORD; 
 
     const handleLogin = (e: React.FormEvent) => {
         e.preventDefault();
@@ -31,32 +31,26 @@ export default function HistoryContent({ view, misses, flatData }: HistoryConten
     if (!isAuthenticated) {
         return (
         <main className="min-h-screen flex items-center justify-center bg-tracker-bg p-4">
-            <div className="bg-white p-8 rounded-xl shadow-2xl border border-tracker-base w-full max-w-md text-center">
+            <div className="bg-white p-6 sm:p-8 rounded-xl shadow-xl border border-tracker-base w-full max-w-md text-center">
             <div className="bg-tracker-light/30 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
                 <Lock className="text-tracker-dark" size={32} />
             </div>
             <h1 className="text-2xl font-bold text-tracker-dark mb-2">Admin Access</h1>
-            <p className="text-sm text-gray-500 mb-6">Masukkan password untuk mengakses data history.</p>
-            
+            <p className="text-sm text-gray-500 mb-6">Masukkan password untuk mengakses history.</p>
             <form onSubmit={handleLogin} className="space-y-4">
                 <input
                 type="password"
                 placeholder="Password..."
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className={`w-full p-3 rounded-md border ${error ? 'border-red-500' : 'border-tracker-base'} outline-none focus:ring-2 focus:ring-tracker-dark text-center text-lg`}
+                className={`w-full p-3 rounded-md border ${error ? 'border-red-500' : 'border-tracker-base'} outline-none focus:ring-2 focus:ring-tracker-dark text-center`}
                 autoFocus
                 />
-                {error && <p className="text-xs text-red-500 font-bold italic">Password salah! Akses ditolak.</p>}
-                <button
-                type="submit"
-                className="w-full bg-tracker-dark text-white py-3 rounded-md font-bold hover:bg-tracker-base transition-all active:scale-95 shadow-md"
-                >
-                UNLOCK HISTORY
+                {error && <p className="text-xs text-red-500 font-bold italic">Password salah!</p>}
+                <button type="submit" className="w-full bg-tracker-dark text-white py-3 rounded-md font-bold hover:bg-tracker-base transition-all active:scale-95 shadow-md uppercase">
+                Unlock History
                 </button>
-                <Link href="/" className="block text-sm text-gray-400 hover:text-tracker-dark pt-2">
-                ← Dashboard Utama
-                </Link>
+                <Link href="/" className="block text-sm text-gray-400 hover:text-tracker-dark pt-2">← Kembali</Link>
             </form>
             </div>
         </main>
@@ -102,7 +96,7 @@ export default function HistoryContent({ view, misses, flatData }: HistoryConten
                 <label className="block text-[10px] font-bold text-tracker-dark mb-1 uppercase tracking-wider">To</label>
                 <input type="date" name="to" className="w-full text-sm p-2 rounded border border-tracker-base outline-none focus:ring-2 focus:ring-tracker-dark bg-white" />
                 </div>
-                <button type="submit" className="bg-tracker-dark text-white px-6 py-2 rounded-md text-sm font-bold hover:bg-tracker-base active:scale-95">FILTER</button>
+                <button type="submit" className="bg-tracker-dark text-white px-6 py-2 rounded-md text-sm font-bold hover:bg-tracker-base transition-colors active:scale-95 uppercase">Filter</button>
             </form>
             </div>
 
@@ -111,9 +105,7 @@ export default function HistoryContent({ view, misses, flatData }: HistoryConten
             {misses.map((m, i) => (
                 <div key={i} className="bg-white border border-tracker-base p-4 rounded-md flex justify-between items-center shadow-sm">
                 <span className="truncate pr-2 font-semibold text-gray-700">{m.name}</span>
-                <span className="bg-red-50 text-red-600 px-3 py-1 rounded-full text-xs font-bold border border-red-100 whitespace-nowrap">
-                    {m.count} Miss
-                </span>
+                <span className="bg-red-50 text-red-600 px-3 py-1 rounded-full text-xs font-bold border border-red-100 whitespace-nowrap">{m.count} Miss</span>
                 </div>
             ))}
             </div>
